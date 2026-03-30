@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Yard Service Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-circle">Y</div>
+        <div class="brand">
+          <span class="brand-title">Yard Command</span>
+          <span class="brand-subtitle">Owner Dashboard</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Overview</span>
+        </button>
+        <button class="nav-item" data-view="jobs">
+          <span class="nav-icon">🧹</span>
+          <span class="nav-label">Jobs</span>
+        </button>
+        <button class="nav-item" data-view="clients">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Clients</span>
+        </button>
+        <button class="nav-item" data-view="schedule">
+          <span class="nav-icon">📅</span>
+          <span class="nav-label">Schedule</span>
+        </button>
+        <button class="nav-item" data-view="staff">
+          <span class="nav-icon">🧑‍🔧</span>
+          <span class="nav-label">Staff</span>
+        </button>
+        <button class="nav-item" data-view="media">
+          <span class="nav-icon">📸</span>
+          <span class="nav-label">Media</span>
+        </button>
+        <button class="nav-item" data-view="payments">
+          <span class="nav-icon">💳</span>
+          <span class="nav-label">Donations & Payments</span>
+        </button>
+        <button class="nav-item" data-view="messages">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Messages</span>
+        </button>
+        <button class="nav-item" data-view="reports">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Reports</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="sidebar-footer-label">Status:</span>
+        <span class="sidebar-footer-pill">Live</span>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input
+              id="globalSearch"
+              type="text"
+              placeholder="Search jobs, clients, addresses, staff..."
+            />
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-btn" id="quickNewBtn">+ New</button>
+          <button class="icon-btn" id="notificationsBtn">🔔</button>
+          <div class="profile-menu">
+            <div class="avatar-circle">C</div>
+            <div class="profile-meta">
+              <span class="profile-name">Owner</span>
+              <span class="profile-role">Admin</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="content">
+        <!-- Overview -->
+        <section class="view view-active" id="view-overview">
+          <h1 class="view-title">Today at a glance</h1>
+          <div class="grid grid-4">
+            <div class="card kpi-card">
+              <div class="kpi-label">Active jobs</div>
+              <div class="kpi-value" id="kpiActiveJobs">0</div>
+              <div class="kpi-footer">View all jobs</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">New requests</div>
+              <div class="kpi-value" id="kpiNewRequests">0</div>
+              <div class="kpi-footer">Review now</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">Today’s schedule</div>
+              <div class="kpi-value" id="kpiTodayJobs">0</div>
+              <div class="kpi-footer">Open schedule</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">Payments this week</div>
+              <div class="kpi-value" id="kpiPaymentsWeek">$0</div>
+              <div class="kpi-footer">View payments</div>
+            </div>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h2>Today’s jobs</h2>
+              </div>
+              <div class="card-body" id="overviewJobsList">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2>Alerts</h2>
+              </div>
+              <div class="card-body" id="overviewAlerts">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Recent activity</h2>
+            </div>
+            <div class="card-body activity-feed" id="activityFeed">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Jobs -->
+        <section class="view" id="view-jobs">
+          <div class="view-header">
+            <h1 class="view-title">Jobs</h1>
+            <button class="primary-btn" id="newJobBtn">+ New Job</button>
+          </div>
+
+          <div class="filters-row">
+            <select id="jobsStatusFilter">
+              <option value="">All statuses</option>
+              <option value="New">New</option>
+              <option value="Estimate sent">Estimate sent</option>
+              <option value="Approved">Approved</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="In progress">In progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Canceled">Canceled</option>
+            </select>
+            <select id="jobsStaffFilter">
+              <option value="">All staff</option>
+            </select>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <table class="table" id="jobsTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Address</th>
+                    <th>Service</th>
+                    <th>Scheduled</th>
+                    <th>Staff</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Clients -->
+        <section class="view" id="view-clients">
+          <div class="view-header">
+            <h1 class="view-title">Clients</h1>
+            <button class="primary-btn" id="newClientBtn">+ New Client</button>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <table class="table" id="clientsTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Total jobs</th>
+                    <th>Total paid</th>
+                    <th>Last job</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Schedule -->
+        <section class="view" id="view-schedule">
+          <div class="view-header">
+            <h1 class="view-title">Schedule</h1>
+          </div>
+          <div class="card">
+            <div class="card-body" id="scheduleList">
+              <!-- Simple list for now; can evolve into calendar -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Staff -->
+        <section class="view" id="view-staff">
+          <div class="view-header">
+            <h1 class="view-title">Staff</h1>
+            <button class="primary-btn" id="newStaffBtn">+ New Staff</button>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <table class="table" id="staffTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Jobs this week</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Media -->
+        <section class="view" id="view-media">
+          <div class="view-header">
+            <h1 class="view-title">Media</h1>
+          </div>
+          <div class="card">
+            <div class="card-body media-grid" id="mediaGrid">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Payments -->
+        <section class="view" id="view-payments">
+          <div class="view-header">
+            <h1 class="view-title">Donations & Payments</h1>
+          </div>
+
+          <div class="grid grid-4">
+            <div class="card kpi-card">
+              <div class="kpi-label">Total donations</div>
+              <div class="kpi-value" id="kpiTotalDonations">$0</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">Total payments</div>
+              <div class="kpi-value" id="kpiTotalPayments">$0</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">Jobs fully covered</div>
+              <div class="kpi-value" id="kpiJobsCovered">0</div>
+            </div>
+            <div class="card kpi-card">
+              <div class="kpi-label">Jobs partially covered</div>
+              <div class="kpi-value" id="kpiJobsPartial">0</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <table class="table" id="paymentsTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>From</th>
+                    <th>Amount</th>
+                    <th>Job</th>
+                    <th>Method</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Messages -->
+        <section class="view" id="view-messages">
+          <div class="view-header">
+            <h1 class="view-title">Messages</h1>
+          </div>
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h2>Threads</h2>
+              </div>
+              <div class="card-body threads-list" id="threadsList">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h2>Conversation</h2>
+              </div>
+              <div class="card-body conversation" id="conversationView">
+                <div class="conversation-empty">
+                  Select a thread to view messages.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reports -->
+        <section class="view" id="view-reports">
+          <div class="view-header">
+            <h1 class="view-title">Reports & Analytics</h1>
+          </div>
+          <div class="card">
+            <div class="card-body" id="reportsSummary">
+              <!-- Placeholder summary -->
+              <p>Jobs per week, revenue vs donations, staff productivity, and neighborhood heatmaps will live here.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section class="view" id="view-settings">
+          <div class="view-header">
+            <h1 class="view-title">Settings</h1>
+          </div>
+          <div class="card">
+            <div class="card-body settings-grid">
+              <div>
+                <h2>Business profile</h2>
+                <label>
+                  Name
+                  <input type="text" id="settingBusinessName" value="Yard Command" />
+                </label>
+                <label>
+                  Contact email
+                  <input type="email" id="settingBusinessEmail" value="owner@example.com" />
+                </label>
+              </div>
+              <div>
+                <h2>Notifications</h2>
+                <label class="checkbox">
+                  <input type="checkbox" checked />
+                  New job requests
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" checked />
+                  Job completed
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" checked />
+                  Payment received
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>
